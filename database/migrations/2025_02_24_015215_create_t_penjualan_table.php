@@ -16,12 +16,12 @@ return new class extends Migration
 
             // FK pada kolom user_id mengacu pada kolom user_id pada tabel m_user
             $table->unsignedBigInteger('user_id')->index();
-            $table->foreign('user_id')->references('user_id')->on('m_user');
             
             $table->string('pembeli', 50);//tidak boleh ada yang sama
             $table->string('penjualan_kode', 20)->unique();//tidak boleh ada yang sama
             $table->dateTime('penjualan_tanggal');//
             $table->timestamps();
+            $table->foreign('user_id')->references('user_id')->on('m_user');
 
         });
     }
