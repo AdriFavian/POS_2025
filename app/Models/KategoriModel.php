@@ -4,12 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
 class KategoriModel extends Model
 {
-    public function barang(): HasMany 
+    use HasFactory;
+
+    protected $table = 'm_kategori';
+    protected $primaryKey = 'id';
+
+    public $timestamps = true;
+
+    protected $fillable = ['kategori_kode','kategori_nama'];
+
+    public function barang()
     {
-        return $this->hasMany(BarangModel::class, 'barang_id', 'barang_id');
+        return $this->hasMany(BarangModel::class, 'kategori_id', 'id');
     }
 }

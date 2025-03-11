@@ -8,8 +8,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BarangModel extends Model
 {
-    public function kategori(): BelongsTo
+    use HasFactory;
+
+    protected $table = 'm_barang';
+    protected $primaryKey = 'barang_id';
+    public $timestamps = true;
+
+    protected $fillable = ['kategori_id','barang_kode',
+        'barang_nama','harga_beli','harga_jual'];
+
+    public function kategori()
     {
-        return $this->belongsTo(KategoriModel::class, 'kategori_id', 'kategori_id');
+        return $this->belongsTo(KategoriModel::class, 'kategori_id', 'id');
+    }
+
+    public function stok()
+    {
+        return $this->hasMany(StokModel::class, 'barang_id', 'barang_id');
+    }
+
+    public function penjualanDetail()
+    {
+        return $this->hasMany(PenjualanDetailModel::class, 'barang_id', 'barang_id');
     }
 }
