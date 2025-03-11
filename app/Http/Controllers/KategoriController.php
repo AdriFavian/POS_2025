@@ -28,14 +28,14 @@ class KategoriController extends Controller
     public function list()
     {
         // Ambil data dari tabel m_kategori
-        $kategories = KategoriModel::select('id', 'kategori_kode', 'kategori_nama');
+        $kategories = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama');
 
         return DataTables::of($kategories)
             ->addIndexColumn()
             ->addColumn('aksi', function ($kategori) {
                 // Tombol edit & hapus
-                $btn = '<a href="' . url('/kategori/' . $kategori->id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/kategori/' . $kategori->id) . '">'
+                $btn = '<a href="' . url('/kategori/' . $kategori->kategori_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/kategori/' . $kategori->kategori_id) . '">'
                     . csrf_field() . method_field('DELETE') .
                     '<button type="submit" class="btn btn-danger btn-sm" 
                     onclick="return confirm(\'Apakah Anda yakin menghapus kategori ini?\');">Hapus</button></form>';
@@ -98,11 +98,12 @@ class KategoriController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'kategori_kode' => 'required|string|max:50|unique:m_kategori,kategori_kode,' . $id . ',id',
-            'kategori_nama' => 'required|string|max:100|unique:m_kategori,kategori_nama,' . $id . ',id'
+            'kategori_kode' => 'required|string|max:50|unique:m_kategori,kategori_kode,' . $id . ',kategori_id',
+            'kategori_nama' => 'required|string|max:100|unique:m_kategori,kategori_nama,' . $id . ',kategori_id'
         ]);
 
-        $kategori = KategoriModel::findOrFail($id);
+        // $kategori = KategoriModel::findOrFail($id);
+        $kategori = KategoriModel::where('kategori_id', $id)->firstOrFail();
         $kategori->update([
             'kategori_kode' => $request->kategori_kode,
             'kategori_nama' => $request->kategori_nama
@@ -113,7 +114,8 @@ class KategoriController extends Controller
 
     public function destroy(string $id)
     {
-        $kategori = KategoriModel::find($id);
+        // $kategori = KategoriModel::find($id);
+        $kategori = KategoriModel::where('kategori_id', $id)->first();
 
         if (!$kategori) {
             return redirect('/kategori')->with('error', 'Kategori tidak ditemukan!');
