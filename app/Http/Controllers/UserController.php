@@ -13,7 +13,7 @@ class UserController extends Controller
     // menampilkan halaman awal user
     public function index()
     {
-        $breadcrumb = (object) [
+        $breadcrumbs = (object) [
             'title' => 'Daftar User',
             'list' => ['Home', 'User']
         ];
@@ -26,7 +26,7 @@ class UserController extends Controller
 
         $level = LevelModel::all(); // ambil data level untuk filter level
 
-        return view('user.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level,'activeMenu' => $activeMenu]);
+        return view('user.index', ['breadcrumbs' => $breadcrumbs, 'page' => $page, 'level' => $level,'activeMenu' => $activeMenu]);
     }
 
     // Ambil data user dalam bentuk json untuk datatables
@@ -59,7 +59,7 @@ class UserController extends Controller
     // Menampilkan halaman form tambah user
     public function create()
     {
-        $breadcrumb = (object) [
+        $breadcrumbs = (object) [
             'title' => 'Tambah User',
             'list' => ['Home', 'User', 'Tambah']
         ];
@@ -71,7 +71,7 @@ class UserController extends Controller
         $levels = LevelModel::all(); // mengambil data level untuk ditampilkan di form
         $activeMenu = 'user'; // set menu yang sedang aktif 
 
-        return view('user.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'levels' => $levels, 'activeMenu' => $activeMenu]);
+        return view('user.create', ['breadcrumbs' => $breadcrumbs, 'page' => $page, 'levels' => $levels, 'activeMenu' => $activeMenu]);
     }
 
     // Menyimpan data user baru
@@ -100,7 +100,7 @@ class UserController extends Controller
     {
         $user = UserModel::with('level')->find($id); // mengambil data user berdasarkan id
 
-        $breadcrumb = (object) [
+        $breadcrumbs = (object) [
             'title' => 'Detail User',
             'list' => ['Home', 'User', 'Detail']
         ];
@@ -111,7 +111,7 @@ class UserController extends Controller
 
         $activeMenu = 'user'; // set menu yang sedang aktif 
 
-        return view('user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
+        return view('user.show', ['breadcrumbs' => $breadcrumbs, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
     }
 
     // Menampilkan halaman form edit user 
@@ -120,7 +120,7 @@ class UserController extends Controller
         $user = UserModel::find($id); 
         $level = LevelModel::all(); 
 
-        $breadcrumb = (object) [ 
+        $breadcrumbs = (object) [ 
             'title' => 'Edit User', 
             'list' => ['Home', 'User', 'Edit'] 
         ]; 
@@ -131,7 +131,7 @@ class UserController extends Controller
 
         $activeMenu = 'user'; // set menu yang sedang aktif 
 
-        return view('user.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'level' => $level, 'activeMenu' => $activeMenu]); 
+        return view('user.edit', ['breadcrumbs' => $breadcrumbs, 'page' => $page, 'user' => $user, 'level' => $level, 'activeMenu' => $activeMenu]); 
     }
 
     // Menyimpan perubahan data user 
