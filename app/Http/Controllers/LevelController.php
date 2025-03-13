@@ -18,7 +18,7 @@ class LevelController extends Controller
 
         $page = (object)[
             'title' => 'Daftar level'
-        ];
+        ]; 
 
         $activeMenu = 'level';
         return view('level.index', compact('breadcrumbs', 'page', 'activeMenu'));
