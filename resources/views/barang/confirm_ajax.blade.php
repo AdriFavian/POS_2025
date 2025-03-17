@@ -49,9 +49,10 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '/barang/' + id + '/delete_ajax',
-                        type: 'DELETE',
+                        type: 'POST',
                         data: {
-                            _token: '{{ csrf_token() }}'
+                            _token: '{{ csrf_token() }}',
+                            _method: 'DELETE'
                         },
                         success: function (response) {
                             if (response.status) {

@@ -24,7 +24,7 @@
                         <div class="col-3">
                             <select class="form-control" id="kategori_id" name="kategori_id">
                                 <option value="">Semua</option>
-                                @foreach($kategories as $item)
+                                @foreach($categories as $item)
                                     <option value="{{ $item->kategori_id }}">{{ $item->kategori_nama }}</option>
                                 @endforeach
                             </select>

@@ -104,7 +104,7 @@ class StokController extends Controller
                 'message' => 'Data stok berhasil disimpan.'
             ]);
         }
-        return redirect('/');
+        return redirect('/stok');
     }
 
     public function edit_ajax($id)
@@ -161,7 +161,7 @@ class StokController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/stok');
     }
 
     public function show_ajax(string $id)
@@ -201,7 +201,7 @@ class StokController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/stok');
     }
 }
 

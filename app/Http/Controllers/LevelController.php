@@ -87,7 +87,7 @@ class LevelController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/level');
     }
 
     public function confirm_ajax(string $id)
@@ -120,7 +120,7 @@ class LevelController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/level');
     }
 }
 

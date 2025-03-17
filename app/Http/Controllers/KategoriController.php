@@ -42,7 +42,7 @@ class KategoriController extends Controller
             ->addColumn('aksi', function ($kategori) {
                 // Tombol edit & hapus
                 $btn  = '<button onclick="modalAction(\'' . url('/kategori/' . $kategori->kategori_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="deleteKategori(\'' . $kategori->kategori_id . '\')" class="btn btn-danger btn-sm">Hapus</button>';
+                $btn .= '<button onclick="modalAction(\'' . url('/kategori/' . $kategori->kategori_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -83,7 +83,7 @@ class KategoriController extends Controller
             ]);
         }
 
-        return redirect('/');
+        return redirect('/kategori');
     }
 
     public function edit_ajax($id)
@@ -96,8 +96,8 @@ class KategoriController extends Controller
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'kategori_kode' => 'required|string|max:50|unique:m_kategori,kategori_kode,' . $id . ',kategori_id',
-                'kategori_nama' => 'required|string|max:100|unique:m_kategori,kategori_nama,' . $id . ',kategori_id'
+                'kategori_kode' => 'required|string|max:50|unique:m_kategori,kategori_kode,'.$id.',kategori_id',
+                'kategori_nama' => 'required|string|max:100|unique:m_kategori,kategori_nama,'.$id.',kategori_id'
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -127,7 +127,7 @@ class KategoriController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('kategori/');
     }
 
     public function confirm_ajax($id)
@@ -160,7 +160,7 @@ class KategoriController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/kategori');
     }
 }
 
@@ -234,33 +234,4 @@ class KategoriController extends Controller
     //     return view('kategori.edit', compact('breadcrumbs', 'page', 'kategori', 'activeMenu'));
     // }
 
-    // public function create()
-    // {
-    //     $breadcrumbs = (object)[
-    //         'title' => 'Tambah Kategori',
-    //         'list'  => ['Home', 'Kategori', 'Tambah']
-    //     ];
-
-    //     $page = (object)[
-    //         'title' => 'Tambah kategori baru'
-    //     ];
-
-    //     $activeMenu = 'kategori';
-
-    //     return view('kategori.create', compact('breadcrumbs', 'page', 'activeMenu'));
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'kategori_kode' => 'required|string|max:50|unique:m_kategori,kategori_kode',
-    //         'kategori_nama' => 'required|string|max:100|unique:m_kategori,kategori_nama'
-    //     ]);
-
-    //     KategoriModel::create([
-    //         'kategori_kode' => $request->kategori_kode,
-    //         'kategori_nama' => $request->kategori_nama
-    //     ]);
-
-    //     return redirect('/kategori')->with('success', 'Kategori berhasil ditambahkan!');
-    // }
+    

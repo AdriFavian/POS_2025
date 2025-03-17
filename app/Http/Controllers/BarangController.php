@@ -91,7 +91,7 @@ class BarangController extends Controller
                 'message' => 'Data barang berhasil disimpan.'
             ]);
         }
-        return redirect('/');
+        return redirect('/barang');
     }
 
 
@@ -150,7 +150,7 @@ class BarangController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/barang');
     }
 
     public function confirm_ajax($id)
@@ -183,7 +183,7 @@ class BarangController extends Controller
                 ]);
             }
         }
-        return redirect('/');
+        return redirect('/barang');
     }
 }
 
