@@ -35,8 +35,9 @@
 
 @push('js')
     <script>
+        var dataPenjualan;
         $(document).ready(function () {
-            var dataPenjualan = $('#table_penjualan').DataTable({
+            dataPenjualan = $('#table_penjualan').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {

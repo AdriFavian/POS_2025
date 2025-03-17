@@ -66,8 +66,9 @@
                 $('#myModal').modal('show');
             });
         }
+        var dataStok;
         $(document).ready(function () {
-            var dataStok = $('#table_stok').DataTable({
+            dataStok = $('#table_stok').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
