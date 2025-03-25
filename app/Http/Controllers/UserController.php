@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\LevelModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -80,7 +79,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Validasi Gagal',
+                    'message' => 'Terjadi kesalahan validasi. Silakan periksa kembali data yang Anda masukkan.',
                     'msgField' => $validator->errors()
                 ]);
             }
@@ -88,11 +87,11 @@ class UserController extends Controller
             UserModel::create($request->all());
             return response()->json([
                 'status' => true,
-                'message' => 'Data user berhasil disimpan'
+                'message' => 'Pengguna berhasil ditambahkan ke sistem.'
             ]);
         }
 
-        return redirect('/user');
+        return redirect('/');
     }
 
     public function show_ajax(string $id)
@@ -128,7 +127,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false, // respon json, true: berhasil, false: gagal
-                    'message' => 'Validasi gagal.',
+                    'message' => 'Terjadi kesalahan validasi. Silakan periksa kembali data yang Anda masukkan.',
                     'msgField' => $validator->errors() // menunjukkan field mana yang error
                 ]);
             }
@@ -140,16 +139,16 @@ class UserController extends Controller
                 $check->update($request->all());
                 return response()->json([
                     'status' => true,
-                    'message' => 'Data berhasil diupdate'
+                    'message' => 'Informasi pengguna berhasil diperbarui.'
                 ]);
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Pengguna yang Anda cari tidak ditemukan.'
                 ]);
             }
         }
-        return redirect('/user');
+        return redirect('/');
     }
 
     public function confirm_ajax(string $id)
@@ -166,18 +165,25 @@ class UserController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $user = UserModel::find($id);
             if ($user) {
-                $user->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+                try {
+                    $user->delete();
+                    return response()->json([
+                        'status'  => true,
+                        'message' => 'Akun pengguna telah berhasil dihapus dari sistem.'
+                    ]);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    return response()->json([
+                        'status'  => false,
+                        'message' => 'Pengguna tidak dapat dihapus karena masih memiliki keterkaitan dengan data lain di sistem.'
+                    ]);
+                }
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Pengguna yang Anda cari tidak ditemukan.'
                 ]);
             }
         }
-        return redirect('/user');
+        return redirect('/');
     }
 }

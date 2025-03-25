@@ -86,7 +86,7 @@ class StokController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status'   => false,
-                    'message'  => 'Validasi gagal.',
+                    'message'  => 'Terjadi kesalahan dalam validasi data. Mohon periksa kembali input Anda.',
                     'msgField' => $validator->errors()
                 ]);
             }
@@ -101,17 +101,17 @@ class StokController extends Controller
 
             return response()->json([
                 'status'  => true,
-                'message' => 'Data stok berhasil disimpan.'
+                'message' => 'Stok berhasil ditambahkan ke dalam sistem.'
             ]);
         }
-        return redirect('/stok');
+        return redirect('/');
     }
 
     public function edit_ajax($id)
     {
         $stok = StokModel::find($id);
         if (!$stok) {
-            return view('stok.edit_ajax')->with('error', 'Data stok tidak ditemukan');
+            return view('stok.edit_ajax')->with('error', 'Stok yang Anda cari tidak ditemukan dalam sistem.');
         }
         $suppliers = SupplierModel::all();
         $users     = UserModel::all();
@@ -135,7 +135,7 @@ class StokController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status'   => false,
-                    'message'  => 'Validasi gagal.',
+                    'message'  => 'Terjadi kesalahan dalam validasi data. Mohon periksa kembali input Anda.',
                     'msgField' => $validator->errors()
                 ]);
             }
@@ -152,16 +152,16 @@ class StokController extends Controller
 
                 return response()->json([
                     'status'  => true,
-                    'message' => 'Data stok berhasil diperbarui.'
+                    'message' => 'Informasi stok berhasil diperbarui.'
                 ]);
             } else {
                 return response()->json([
                     'status'  => false,
-                    'message' => 'Data stok tidak ditemukan.'
+                    'message' => 'Stok yang Anda cari tidak ditemukan dalam sistem.'
                 ]);
             }
         }
-        return redirect('/stok');
+        return redirect('/');
     }
 
     public function show_ajax(string $id)
@@ -186,140 +186,21 @@ class StokController extends Controller
                     $stok->delete();
                     return response()->json([
                         'status'  => true,
-                        'message' => 'Data stok berhasil dihapus.'
+                        'message' => 'Stok telah berhasil dihapus dari sistem.'
                     ]);
                 } catch (\Illuminate\Database\QueryException $e) {
                     return response()->json([
                         'status'  => false,
-                        'message' => 'Data stok gagal dihapus karena masih terkait dengan data lain.'
+                        'message' => 'Penghapusan stok tidak dapat dilakukan karena masih terkait dengan data lain.'
                     ]);
                 }
             } else {
                 return response()->json([
                     'status'  => false,
-                    'message' => 'Data stok tidak ditemukan.'
+                    'message' => 'Stok yang Anda cari tidak ditemukan dalam sistem.'
                 ]);
             }
         }
-        return redirect('/stok');
+        return redirect('/');
     }
 }
-
-    // public function create()
-    // {
-    //     $breadcrumbs = (object)[
-    //         'title' => 'Tambah Stok',
-    //         'list'  => ['Home', 'Stok', 'Tambah']
-    //     ];
-
-    //     $page = (object)[
-    //         'title' => 'Tambah stok baru'
-    //     ];
-
-    //     $activeMenu = 'stok';
-
-    //     $suppliers = SupplierModel::all();
-    //     $users     = UserModel::all();
-    //     $barangs   = BarangModel::all();
-
-    //     return view('stok.create', compact('breadcrumbs', 'page', 'activeMenu', 'suppliers', 'users', 'barangs'));
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'supplier_id' => 'required|exists:m_supplier,supplier_id',
-    //         'user_id'     => 'required|exists:m_user,user_id',
-    //         'barang_id'   => 'required|exists:m_barang,barang_id',
-    //         'stok_tanggal'=> 'required|date',
-    //         'stok_jumlah' => 'required|integer'
-    //     ]);
-
-    //     StokModel::create([
-    //         'supplier_id' => $request->supplier_id,
-    //         'user_id'     => $request->user_id,
-    //         'barang_id'   => $request->barang_id,
-    //         'stok_tanggal'=> $request->stok_tanggal,
-    //         'stok_jumlah' => $request->stok_jumlah
-    //     ]);
-
-    //     return redirect('/stok')->with('success', 'Data stok berhasil ditambahkan!');
-    // }
-
-    // public function show($id)
-    // {
-    //     $stok = StokModel::with(['supplier', 'user', 'barang'])->find($id);
-
-    //     $breadcrumbs = (object)[
-    //         'title' => 'Detail Stok',
-    //         'list'  => ['Home', 'Stok', 'Detail']
-    //     ];
-
-    //     $page = (object)[
-    //         'title' => 'Detail stok'
-    //     ];
-
-    //     $activeMenu = 'stok';
-
-    //     return view('stok.show', compact('stok', 'breadcrumbs', 'page', 'activeMenu'));
-    // }
-
-    // public function edit($id)
-    // {
-    //     $stok = StokModel::findOrFail($id);
-
-    //     $breadcrumbs = (object)[
-    //         'title' => 'Edit Stok',
-    //         'list'  => ['Home', 'Stok', 'Edit']
-    //     ];
-
-    //     $page = (object)[
-    //         'title' => 'Edit stok'
-    //     ];
-
-    //     $activeMenu = 'stok';
-
-    //     $suppliers = SupplierModel::all();
-    //     $users     = UserModel::all();
-    //     $barangs   = BarangModel::all();
-
-    //     return view('stok.edit', compact('stok', 'breadcrumbs', 'page', 'activeMenu', 'suppliers', 'users', 'barangs'));
-    // }
-
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'supplier_id' => 'required|exists:m_supplier,supplier_id',
-    //         'user_id'     => 'required|exists:m_user,user_id',
-    //         'barang_id'   => 'required|exists:m_barang,barang_id',
-    //         'stok_tanggal'=> 'required|date',
-    //         'stok_jumlah' => 'required|integer'
-    //     ]);
-
-    //     $stok = StokModel::findOrFail($id);
-    //     $stok->update([
-    //         'supplier_id' => $request->supplier_id,
-    //         'user_id'     => $request->user_id,
-    //         'barang_id'   => $request->barang_id,
-    //         'stok_tanggal'=> $request->stok_tanggal,
-    //         'stok_jumlah' => $request->stok_jumlah
-    //     ]);
-
-    //     return redirect('/stok')->with('success', 'Data stok berhasil diperbarui!');
-    // }
-
-    // public function destroy($id)
-    // {
-    //     $stok = StokModel::find($id);
-
-    //     if (!$stok) {
-    //         return redirect('/stok')->with('error', 'Data stok tidak ditemukan!');
-    //     }
-
-    //     try {
-    //         $stok->delete();
-    //         return redirect('/stok')->with('success', 'Data stok berhasil dihapus!');
-    //     } catch (\Illuminate\Database\QueryException $e) {
-    //         return redirect('/stok')->with('error', 'Data stok gagal dihapus karena masih terkait dengan data lain!');
-    //     }
-    // }
