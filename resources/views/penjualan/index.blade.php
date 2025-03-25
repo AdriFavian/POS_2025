@@ -28,6 +28,13 @@
             </table>
         </div>
     </div>
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('css')
@@ -35,9 +42,14 @@
 
 @push('js')
     <script>
-        var dataPenjualan;
+        function modalAction(url = '') {
+            $('#myModal').load(url, function () {
+                $('#myModal').modal('show');
+            });
+        }
+
         $(document).ready(function () {
-            dataPenjualan = $('#table_penjualan').DataTable({
+            var dataPenjualan = $('#table_penjualan').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
@@ -54,6 +66,7 @@
                     { data: "aksi", className: "text-center", orderable: false, searchable: false }
                 ]
             });
+            window.dataPenjualan = dataPenjualan;
         });
     </script>
 @endpush

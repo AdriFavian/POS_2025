@@ -58,6 +58,63 @@
           <p>Transaksi Penjualan</p>
         </a>
       </li>
+      {{-- <li class="nav-item" style="margin-top: 20px; margin-bottom: 10px;">
+        <a href="#" class="nav-link bg-danger text-white" onclick="logoutConfirm(event)">
+          <i class="nav-icon fas fa-sign-out-alt"></i>
+          <p>Keluar</p>
+        </a>
+        <form id="logout-form" action="{{ url('/logout') }}" method="POST" class="d-none">
+          @csrf
+        </form>
+      </li> --}}
+      <li class="nav-item" style="margin-top: 20px; margin-bottom: 10px;">
+        <a href="#" class="nav-link logout-btn" onclick="logoutConfirm(event)"
+          style="background: linear-gradient(45deg, #dc3545, #ff0000);
+                  color: white; 
+                  padding: 10px 15px; 
+                  border-radius: 10px;
+                  transition: all 0.3s ease-in-out;
+                  display: flex;
+                  align-items: center;
+                  justify-content: left;
+                  text-decoration: none;">
+            <i class="nav-icon fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+            <p style="margin: 0;">Keluar</p>
+        </a>
+        <form id="logout-form" action="{{ url('/logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
+    </li>
+    
     </ul>
   </nav>
 </div>
+<script>
+  function logoutConfirm(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: 'Konfirmasi Logout',
+      text: 'Apakah Anda yakin ingin logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, Logout',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('logout-form').submit();
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+        let logoutBtn = document.querySelector(".logout-btn");
+        logoutBtn.addEventListener("mouseenter", function() {
+            this.style.background = "linear-gradient(45deg, #c82333, #b50000)";
+            this.style.transform = "scale(1.05)";
+        });
+        logoutBtn.addEventListener("mouseleave", function() {
+            this.style.background = "linear-gradient(45deg, #dc3545, #ff0000)";
+            this.style.transform = "scale(1)";
+        });
+    });
+</script>

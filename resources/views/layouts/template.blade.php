@@ -34,7 +34,7 @@
   <!-- Site wrapper -->
   <div class="wrapper">
     <!-- Navbar -->
-    @include('layouts.header')
+    @include('layouts/header')
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
@@ -43,28 +43,26 @@
       <a href="{{ url('/') }}" class="brand-link">
         <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo"
           class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">PWL - Starter Code</span>
+        <span class="brand-text font-weight-light">{{ Auth::user()->username ?? 'Guest'  }}</span>
       </a>
 
       <!-- Sidebar -->
-      @include('layouts.sidebar')
+      @include('layouts/sidebar')
       <!-- /.sidebar -->
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      @include('layouts.breadcrumb')
+      @include('layouts/breadcrumb')
 
       <!-- Main content -->
-      <section class="content">
-        @yield('content')
-      </section>
+      @yield('content')
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
-    @include('layouts.footer')
+    @include('layouts/footer')
   </div>
   <!-- ./wrapper -->
 
@@ -84,7 +82,7 @@
   <script src="{{ asset('adminlte/plugins/pdfmake/vfs_fonts.js') }}"></script>
   <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
   <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-  <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+  <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.colvis.min.js') }}"></script>
 
   <!-- jquery-validation -->
   <script src="{{ asset('adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
