@@ -2,11 +2,11 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <a class="nav-link2" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars" style="margin-left: 12px; color: gray;"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      {{-- <li class="nav-item d-none d-sm-inline-block">
         <a href="{{ url('/')}}" class="nav-link">Home</a>
-      </li>
+      </li> --}}
       {{-- <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li> --}}
