@@ -34,6 +34,12 @@ class BarangSeeder extends Seeder
             ['barang_id' => 13, 'kategori_id' => 3, 'barang_kode' => 'BRG013', 'barang_nama' => 'Lemari Dapur', 'harga_beli' => 850000, 'harga_jual' => 1100000],
             ['barang_id' => 14, 'kategori_id' => 4, 'barang_kode' => 'BRG014', 'barang_nama' => 'Tempat Tidur King', 'harga_beli' => 2000000, 'harga_jual' => 2300000],
             ['barang_id' => 15, 'kategori_id' => 5, 'barang_kode' => 'BRG015', 'barang_nama' => 'Rak TV', 'harga_beli' => 500000, 'harga_jual' => 700000],
+
+            ['barang_id' => 16, 'kategori_id' => 6, 'barang_kode' => 'BRG016', 'barang_nama' => 'Laptop GEMING', 'harga_beli' => 500, 'harga_jual' => 4500000],
+            ['barang_id' => 17, 'kategori_id' => 7, 'barang_kode' => 'BRG017', 'barang_nama' => 'Baju Kerajaan', 'harga_beli' => 3500, 'harga_jual' => 500000],
+            ['barang_id' => 18, 'kategori_id' => 8, 'barang_kode' => 'BRG018', 'barang_nama' => 'Burger JUMBO', 'harga_beli' => 125000, 'harga_jual' => 225000],
+            ['barang_id' => 19, 'kategori_id' => 9, 'barang_kode' => 'BRG019', 'barang_nama' => 'Soda Gembira', 'harga_beli' => 1750000, 'harga_jual' => 3500000],
+            ['barang_id' => 20, 'kategori_id' => 10, 'barang_kode' => 'BRG020', 'barang_nama' => 'Gitar Van Hallen', 'harga_beli' => 1200, 'harga_jual' => 850000],
         ];
 
         DB::table('m_barang')->insert($data);

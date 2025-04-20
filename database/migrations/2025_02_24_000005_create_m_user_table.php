@@ -6,23 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('m_user', function (Blueprint $table) {
             $table->id('user_id');
-
-            // FK pada kolom level_id mengacu pada kolom level_id pada tabel m_level
-            $table->unsignedBigInteger('level_id')->index(); // FK
-            
-            $table->string('username', 20)->unique(); // tidak boleh ada yang sama
+            $table->string('username', 20)->unique();
             $table->string('nama', 100);
             $table->string('password');
+            $table->string('photo')->nullable()->default(null);
             $table->timestamps();
-            
-            $table->foreign('level_id')->references('level_id')->on('m_level');
+
+            $table->foreignId('level_id')
+                ->constrained('m_level', 'level_id')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

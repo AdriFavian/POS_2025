@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,11 +16,11 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             KategoriSeeder::class,
             SupplierSeeder::class,
-            UserSeeder::class,
             BarangSeeder::class,
+            UserSeeder::class, // Pastikan UserSeeder dijalankan sebelum StokSeeder
             PenjualanSeeder::class,
-            StokSeeder::class,
             PenjualanDetailSeeder::class,
+            StokSeeder::class,
         ]);
     }
 }

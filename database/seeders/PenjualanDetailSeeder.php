@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,21 +12,31 @@ class PenjualanDetailSeeder extends Seeder
      */
     public function run(): void
     {
+        $penjualanIds = DB::table('t_penjualan')->pluck('penjualan_id')->toArray();
+        $barangIds = DB::table('m_barang')->pluck('barang_id')->toArray();
+
+        if (empty($penjualanIds) || empty($barangIds)) {
+            throw new \Exception('Seeder gagal: Tidak ada data di t_penjualan atau m_barang.');
+        }
+
         $data = [];
-        $detailId = 1;
+        foreach ($penjualanIds as $penjualan_id) {
+            for ($j = 1; $j <= 3; $j++) { // 3 barang per transaksi
+                $barang_id = $barangIds[array_rand($barangIds)];
+                $harga = DB::table('m_barang')->where('barang_id', $barang_id)->value('harga_jual');
+                $jumlah = rand(1, 5);
 
-        for ($penjualanId = 1; $penjualanId <= 10; $penjualanId++) {
-            $barangIds = array_rand(range(1, 15), 3); //random 3 barang untuk setiap transaksi
-
-            foreach ($barangIds as $barangId) {
-                $harga = DB::table('m_barang')->where('barang_id', $barangId + 1)->value('harga_jual');
                 $data[] = [
-                    'detail_id' => $detailId++,
-                    'penjualan_id' => $penjualanId,
-                    'barang_id' => $barangId + 1,
+                    'penjualan_id' => $penjualan_id,
+                    'barang_id' => $barang_id,
                     'harga' => $harga,
-                    'jumlah' => rand(1, 5),
+                    'jumlah' => $jumlah,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
+
+                // Update total harga transaksi
+                DB::table('t_penjualan')->where('penjualan_id', $penjualan_id)->increment('total_harga', $jumlah * $harga);
             }
         }
 

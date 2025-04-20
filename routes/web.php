@@ -1,34 +1,34 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
-use App\Http\Controllers\BarangController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\StokController;
 use App\Http\Controllers\PenjualanController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\StokController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Route;
 
-// Group Login 
 Route::group(['prefix' => 'login'], function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
-    Route::post('/', [AuthController::class, 'postlogin']);
+    Route::post('/', [AuthController::class, 'postlogin'])->middleware('throttle:login-limit')->name('login.post');
 });
 
-// Register 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
-
-// Logout Route
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
-// Protected (hanya bisa diakses jika login)
+Route::prefix('user')->group(function () {
+    Route::get('/edit_profile', [UserController::class, 'edit_profile'])->name('edit_profile');
+    Route::put('/{id}/update_profil}', [UserController::class, 'update_profile'])->name('update_profil');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
 
-    // Admin (ADM)
     Route::middleware(['authorize:ADM'])->group(function () {
         Route::prefix('level')->group(function () {
             Route::get('/', [LevelController::class, 'index']);
@@ -63,7 +63,6 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Admin (ADM) dan Manager (MNG)
     Route::middleware(['authorize:ADM,MNG'])->group(function () {
         Route::prefix('kategori')->group(function () {
             Route::get('/', [KategoriController::class, 'index']);
@@ -95,6 +94,22 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
         });
+
+        Route::prefix('supplier')->group(function () {
+            Route::get('/', [SupplierController::class, 'index']);
+            Route::post('/list', [SupplierController::class, 'list'])->name('supplier.list');
+            Route::get('/create_ajax', [SupplierController::class, 'create_ajax']);
+            Route::post('/ajax', [SupplierController::class, 'store_ajax']);
+            Route::get('/{id}/show_ajax', [SupplierController::class, 'show_ajax'])->name('supplier.show_ajax');
+            Route::get('/{id}/edit_ajax', [SupplierController::class, 'edit_ajax']);
+            Route::put('/{id}/update_ajax', [SupplierController::class, 'update_ajax']);
+            Route::get('/import', [SupplierController::class, 'import']);
+            Route::post('/import_ajax', [SupplierController::class, 'import_ajax']);
+            Route::get('/export_excel', [SupplierController::class, 'export_excel']);
+            Route::get('/export_pdf', [SupplierController::class, 'export_pdf']);
+            Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']);
+        });
     });
 
     Route::middleware(['authorize:MNG,ADM,STF'])->group(function () {
@@ -120,6 +135,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [PenjualanController::class, 'index']);
             Route::post('/list', [PenjualanController::class, 'list'])->name('penjualan.list');
             Route::get('/{id}/show_ajax', [PenjualanController::class, 'show_ajax']);
+            Route::get('/export_pdf', [PenjualanController::class, 'export_pdf']);
+            Route::get('/export_excel', [PenjualanController::class, 'export_excel']);
             Route::get('/{id}/delete_ajax', [PenjualanController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [PenjualanController::class, 'delete_ajax']);
         });

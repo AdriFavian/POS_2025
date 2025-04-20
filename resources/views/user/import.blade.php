@@ -1,12 +1,12 @@
-<form action="{{ url('/barang/import_ajax') }}" method="POST" id="form-import" enctype="multipart/form-data">
+<form action="{{ url('/user/import_ajax') }}" method="POST" id="form-import" enctype="multipart/form-data">
     @csrf
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-md" ro="document">
         <div class="modal-content">
 
             <!-- Header -->
             <div class="modal-header bg-dark">
                 <h5 class="modal-title text-white">
-                    Import Data Barang
+                    Import Data User
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -22,34 +22,34 @@
                             <i class="fa fa-info-circle text-dark mr-2"></i>
                             <span class="text-dark small">Format File Excel:</span>
                         </div>
-                
-                        <div class="border rounded p-2 d-flex flex-wrap justify-content text-dark small mb-3" style="background-color: #f8f9fa;">
-                            <div class="px-2"><strong>Kolom A:</strong> kategori_id</div>
-                            <div class="px-2"><strong>Kolom B:</strong> barang_kode</div>
-                            <div class="px-2"><strong>Kolom C:</strong> barang_nama</div>
-                            <div class="px-2"><strong>Kolom D:</strong> harga_beli</div>
-                            <div class="px-2"><strong>Kolom E:</strong> harga_jual</div>
+
+                        <div class="border rounded p-2 d-flex flex-wrap justify-content text-dark small mb-3"
+                            style="background-color: #f8f9fa;">
+                            <div class="px-2"><strong>Kolom A:</strong> level_id</div>
+                            <div class="px-2"><strong>Kolom B:</strong> username</div>
+                            <div class="px-2"><strong>Kolom C:</strong> nama</div>
+                            <div class="px-2"><strong>Kolom D:</strong> password</div>
                         </div>
-                
-                        <a href="{{ asset('assets/templates/template_barang.xlsx') }}"
-                            class="btn btn-sm btn-outline-dark" download>
+
+                        <a href="{{ asset('assets/templates/template_user.xlsx') }}" class="btn btn-sm btn-outline-dark"
+                            download>
                             <i class="fa fa-file-excel text-green"></i> Download Template
                         </a>
                     </div>
-                </div>      
+                </div>
 
                 <!-- File Input -->
                 <div class="form-group">
-                    <label for="file_barang" class="font-weight-bold">
+                    <label for="file_user" class="font-weight-bold">
                         File Excel (.xlsx)
                     </label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="file_barang" name="file_barang" required>
-                        <label class="custom-file-label" for="file_barang">
+                        <input type="file" class="custom-file-input" id="file_user" name="file_user" required>
+                        <label class="custom-file-label" for="file_user">
                             Pilih file...
                         </label>
                     </div>
-                    <small id="error-file_barang" class="error-text form-text text-danger"></small>
+                    <small id="error-file_user" class="error-text form-text text-danger"></small>
                 </div>
             </div>
 
@@ -67,17 +67,16 @@
 </form>
 
 <script>
-    // Pastikan script ini dijalankan setelah modal selesai di-load
     $('#myModal').on('shown.bs.modal', function () {
-        // Update label custom-file saat file dipilih
-        $('.custom-file-input').on('change', function () {
+        $('.custom-file-input').on('change', function () { // Update label custom-file saat file dipilih
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
 
+        // Validasi form menggunakan jQuery Validate
         $("#form-import").validate({
             rules: {
-                file_barang: {
+                file_user: {
                     required: true,
                     extension: "xlsx"
                 }
@@ -92,7 +91,7 @@
                     contentType: false,
                     success: function (response) {
                         if (response.status) {
-                            // Jika sukses
+                            // Jika sukses, tutup modal dan tampilkan pesan
                             $('#myModal').modal('hide');
                             Swal.fire({
                                 icon: 'success',
@@ -100,10 +99,10 @@
                                 text: response.message
                             }).then(() => {
                                 location.reload();
-                                tableBarang.ajax.reload();
+                                tableUser.ajax.reload();
                             });
                         } else {
-                            // Jika terjadi error
+                            // Tampilkan error dari validasi atau proses import
                             $('.error-text').text('');
                             $.each(response.msgField, function (prefix, val) {
                                 $('#error-' + prefix).text(val[0]);

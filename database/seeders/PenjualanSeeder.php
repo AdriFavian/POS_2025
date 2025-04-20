@@ -1,11 +1,9 @@
 <?php
-
 namespace Database\Seeders;
 
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PenjualanSeeder extends Seeder
 {
@@ -14,16 +12,22 @@ class PenjualanSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [];
-        $tanggalAwal = now()->subDays(10);
+        $userIds = DB::table('m_user')->pluck('user_id')->toArray();
 
+        if (empty($userIds)) {
+            throw new \Exception('Seeder gagal: Tidak ada user di tabel m_user.');
+        }
+
+        $data = [];
         for ($i = 1; $i <= 10; $i++) {
             $data[] = [
                 'penjualan_id' => $i,
-                'user_id' => rand(2, 3), // penjualan oleh manager/staff
-                'pembeli' => 'Pembeli ' . $i,
-                'penjualan_kode' => 'PNJ' . str_pad($i, 3, '0', STR_PAD_LEFT),
-                'penjualan_tanggal' => $tanggalAwal->addDay()->toDateTimeString(),
+                'user_id' => $userIds[array_rand($userIds)], // Ambil user yang ada
+                'pembeli' => 'Pembeli '.$i,
+                'penjualan_kode' => strtoupper(Str::random(10)), // Kode unik
+                'penjualan_tanggal' => now()->subDays(rand(1, 30)), // Tanggal acak dalam 30 hari terakhir
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
         }
 

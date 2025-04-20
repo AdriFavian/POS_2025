@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('t_penjualan', function (Blueprint $table) {
-            $table->id('penjualan_id');//PK
-
-            // FK pada kolom user_id mengacu pada kolom user_id pada tabel m_user
-            $table->unsignedBigInteger('user_id')->index();
-            
-            $table->string('pembeli', 50);//tidak boleh ada yang sama
-            $table->string('penjualan_kode', 20)->unique();//tidak boleh ada yang sama
-            $table->dateTime('penjualan_tanggal');//
+            $table->id('penjualan_id');
+            $table->string('pembeli', 50);
+            $table->string('penjualan_kode', 20)->unique();
+            $table->dateTime('penjualan_tanggal');
+            $table->integer('total_harga')->default(0);
             $table->timestamps();
-            $table->foreign('user_id')->references('user_id')->on('m_user');
 
+            $table->foreignId('user_id')
+                ->constrained('m_user', 'user_id')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
@@ -34,3 +34,4 @@ return new class extends Migration
         Schema::dropIfExists('t_penjualan');
     }
 };
+

@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Barryvdh\DomPDF\Facade\Pdf;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf as WriterPdf;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Log;
-
 
 class BarangController extends Controller
 {
@@ -98,7 +95,6 @@ class BarangController extends Controller
         }
         return redirect('/');
     }
-
 
     public function show_ajax($id)
     {
@@ -201,7 +197,7 @@ class BarangController extends Controller
 
             // Validasi file: harus .xlsx dengan ukuran maksimal 2MB
             $rules = [
-                'file_barang' => ['required', 'mimes:xlsx,xls', 'max:2048'],
+                'file_barang' => ['required', 'mimes:xlsx', 'max:2048'],
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -253,6 +249,16 @@ class BarangController extends Controller
                 foreach ($data as $rowIndex => $rowValue) {
                     if ($rowIndex == 1) {
                         continue; // Lewati header
+                    }
+
+                    if (
+                        empty(trim($rowValue['A'] ?? '')) &&
+                        empty(trim($rowValue['B'] ?? '')) &&
+                        empty(trim($rowValue['C'] ?? '')) &&
+                        empty(trim($rowValue['D'] ?? '')) &&
+                        empty(trim($rowValue['E'] ?? ''))
+                    ) {
+                        continue;
                     }
 
                     $kategoriId = trim($rowValue['A'] ?? '');
@@ -330,7 +336,6 @@ class BarangController extends Controller
         return redirect('/');
     }
 
-
     public function export_excel()
     {
         // Ambil data barang yang akan diexport
@@ -403,10 +408,10 @@ class BarangController extends Controller
             ->with('kategori')
             ->get();
 
-        // $pdf = Pdf::loadView('barang.export_pdf', ['barang' => $barang]);
-        // $pdf->setPaper('a4', 'portrait');
-        // $pdf->setOption("isRemoteEnabled", true);
+        $pdf = Pdf::loadView('barang.export_pdf', ['barang' => $barang]);
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->setOption("isRemoteEnabled", true);
 
-        // return $pdf->stream('Data Barang ' . date('Y-m-d H:i:s') . '.pdf');
+        return $pdf->stream('Data Barang ' . date('Y-m-d H:i:s') . '.pdf');
     }
 }

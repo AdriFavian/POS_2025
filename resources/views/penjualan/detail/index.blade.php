@@ -20,13 +20,16 @@
 @else
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
+            <!-- Header Modal -->
             <div class="modal-header">
                 <h5 class="modal-title">Detail Penjualan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <!-- Body Modal -->
             <div class="modal-body">
+                <!-- Informasi Penjualan (Header) -->
                 <h6>Informasi Penjualan</h6>
                 <div class="table-responsive mb-3">
                     <table class="table table-bordered table-striped table-hover table-sm"
@@ -53,17 +56,20 @@
                                 <td>{{ \Carbon\Carbon::parse($penjualan->penjualan_tanggal)->format('Y-m-d') }}</td>
                             </tr>
                             <tr>
-                                <th>Total Harga</th>
-                                <td>{{ $penjualan->total_harga }}</td>
+                                <th>User yang Mencatat</th>
+                                <td>{{ $penjualan->user ? $penjualan->user->nama : '-' }}</td>
                             </tr>
                             <tr>
-                                <th>User</th>
-                                <td>{{ $penjualan->user ? $penjualan->user->nama : '-' }}</td>
+                                <th>Total Harga</th>
+                                <td>@rupiah($penjualan->total_harga)</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
                 <hr>
+
+                <!-- Detail Penjualan -->
                 <h6>Detail Penjualan</h6>
                 @if($penjualan->detail->isEmpty())
                     <p>Tidak ada detail penjualan.</p>
@@ -92,27 +98,30 @@
                                 </thead>
                                 <tbody>
                                     @foreach($penjualan->detail as $key => $detail)
-                                        @php
-                                            $subtotal = $detail->harga * $detail->jumlah;
-                                            $grandTotal += $subtotal;
-                                        @endphp
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $detail->barang ? $detail->barang->barang_nama : '-' }}</td>
-                                            <td>{{ $detail->harga }}</td>
-                                            <td>{{ $detail->jumlah }}</td>
-                                            <td>{{ $subtotal }}</td>
-                                        </tr>
+                                                    @php
+                                                        $subtotal = $detail->harga * $detail->jumlah;
+                                                        $grandTotal += $subtotal;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $detail->barang ? $detail->barang->barang_nama : '-' }}</td>
+                                                        <td>@rupiah($detail->harga)</td>
+                                                        <td>{{ $detail->jumlah }}</td>
+                                                        <!-- Subtotal dihitung manual -->
+                                                        <td>@rupiah($subtotal)</td>
+                                                    </tr>
                                     @endforeach
+                                    <!-- Tambahkan baris total di bawah subtotal -->
                                     <tr>
                                         <th colspan="4" class="text-left">Total</th>
-                                        <th>{{ $grandTotal }}</th>
+                                        <th>@rupiah($grandTotal)</th>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                 @endif
             </div>
+            <!-- Footer Modal -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
             </div>

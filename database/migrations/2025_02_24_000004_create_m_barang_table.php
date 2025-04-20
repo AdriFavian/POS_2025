@@ -6,24 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('m_barang', function (Blueprint $table) {
-            $table->id('barang_id'); // Primary Key
-
-            // FK pada kolom kategori_id mengacu pada kolom kategori_id pada tabel m_kategori
-            $table->unsignedBigInteger('kategori_id')->index();
-            
-            $table->string('barang_kode', 10)->unique(); // tidak boleh ada yang sama
+            $table->id('barang_id');
+            $table->foreignId('kategori_id')
+                ->constrained('m_kategori', 'kategori_id')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+            $table->string('barang_kode', 10)->unique();
             $table->string('barang_nama', 100);
             $table->integer('harga_beli');
             $table->integer('harga_jual');
             $table->timestamps();
-            $table->foreign('kategori_id')->references('kategori_id')->on('m_kategori');
-
         });
     }
 

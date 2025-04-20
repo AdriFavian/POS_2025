@@ -23,6 +23,8 @@ class UserModel extends Authenticatable
     protected $hidden = ['password']; // jangan ditampilkan saat select
     protected $casts = ['password' => 'hashed']; // casting password agar otomatis di hash
 
+    protected $with = ['level'];
+
     public function getRole(): string
     {
         return $this->level->level_kode;

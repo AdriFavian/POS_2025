@@ -1,11 +1,20 @@
 @extends('layouts.template')
 
 @section('content')
-    <div class="card card-outline card-primary">
+    <div class="card card-outline card-primary mr-3 ml-3">
         <div class="card-header">
-            <h3 class="card-title">{{ $page->title }}</h3>
+            {{-- <h3 class="card-title">{{ $page->title }}</h3> --}}
+            <div class="card-tools">
+                <a href="{{ url('/penjualan/export_excel') }}" class="btn btn-sm bg-light mr-2" style="border: 1px solid black">
+                    <i class="fa fa-file-excel mr-1" style="color: green"></i>Export Excel
+                </a>
+                <a href="{{ url('/penjualan/export_pdf') }}"class="btn btn-sm btn-light mr-2" style="border: 1px solid black">
+                    <i class="fa fa-file-pdf mr-1" style="color: tomato"></i> Export PDF
+                </a>
+            </div>
         </div>
         <div class="card-body">
+            <!-- Pesan Sukses dan Error -->
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -13,6 +22,7 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
+            <!-- Tabel Data Penjualan -->
             <table class="table table-bordered table-striped table-hover table-sm" id="table_penjualan">
                 <thead>
                     <tr>
@@ -28,10 +38,12 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal Global untuk AJAX (gunakan id "myModal") -->
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-
+                <!-- Konten modal akan dimuat secara dinamis melalui AJAX -->
             </div>
         </div>
     </div>
@@ -42,6 +54,7 @@
 
 @push('js')
     <script>
+        // Fungsi untuk memuat konten modal via AJAX
         function modalAction(url = '') {
             $('#myModal').load(url, function () {
                 $('#myModal').modal('show');
