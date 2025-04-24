@@ -123,13 +123,15 @@
                 <td>{{ $p->pembeli }}</td>
                 <td class="text-center">{{ \Carbon\Carbon::parse($p->penjualan_tanggal)->format('Y-m-d') }}</td>
                 <td>{{ $p->user->nama ?? '-' }}</td>
-                <td class="text-center">@rupiah($p->total_harga)</td>
+                {{-- <td class="text-center">@rupiah($p->total_harga)</td> --}}
+                <td>Rp. {{ number_format($p->total_harga, 0, ',', '.') }}</td>
             </tr>
             @endforeach
             <!-- Total Keseluruhan -->
             <tr>
                 <th colspan="5" class="text-left">Total Keseluruhan</th>
-                <th class="grand-total">@rupiah($grandTotal)</th>
+                {{-- <th class="grand-total">@rupiah($grandTotal)</th> --}}
+                <td>Rp. {{ number_format($grandTotal, 0, ',', '.') }}</td>
             </tr>
         </tbody>
     </table>

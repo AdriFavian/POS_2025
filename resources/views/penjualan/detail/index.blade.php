@@ -1,5 +1,5 @@
 @if(is_null($penjualan))
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Kesalahan</h5>
@@ -18,7 +18,7 @@
         </div>
     </div>
 @else
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <!-- Header Modal -->
             <div class="modal-header">
@@ -61,7 +61,9 @@
                             </tr>
                             <tr>
                                 <th>Total Harga</th>
-                                <td>@rupiah($penjualan->total_harga)</td>
+                                {{-- <td>($penjualan->total_harga)</td> --}}
+                                <td>Rp. {{ number_format($penjualan->total_harga, 0, ',', '.') }}</td>
+                                
                             </tr>
                         </tbody>
                     </table>
@@ -105,16 +107,19 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $detail->barang ? $detail->barang->barang_nama : '-' }}</td>
-                                                        <td>@rupiah($detail->harga)</td>
+                                                        {{-- <td>@rupiah($detail->harga)</td> --}}
+                                                        <td>Rp. {{ number_format($detail->harga, 0, ',', '.') }}</td>
                                                         <td>{{ $detail->jumlah }}</td>
                                                         <!-- Subtotal dihitung manual -->
-                                                        <td>@rupiah($subtotal)</td>
+                                                        {{-- <td>@rupiah($subtotal)</td> --}}
+                                                        <td>Rp. {{ number_format($subtotal, 0, ',', '.') }}</td>
                                                     </tr>
                                     @endforeach
                                     <!-- Tambahkan baris total di bawah subtotal -->
                                     <tr>
                                         <th colspan="4" class="text-left">Total</th>
-                                        <th>@rupiah($grandTotal)</th>
+                                        {{-- <th>@rupiah($grandTotal)</th> --}}
+                                        <th>Rp. {{ number_format($grandTotal, 0, ',', '.') }}</th>
                                     </tr>
                                 </tbody>
                             </table>

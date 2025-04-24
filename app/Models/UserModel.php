@@ -26,6 +26,7 @@ class UserModel extends Authenticatable
     protected $with = ['level'];
 
     public function getRole(): string
+    
     {
         return $this->level->level_kode;
     }

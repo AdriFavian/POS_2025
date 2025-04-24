@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\PenjualanModel;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\Facades\DataTables;
+
 
 class PenjualanController extends Controller
 {
@@ -18,19 +20,27 @@ class PenjualanController extends Controller
             'title' => 'Daftar Penjualan',
             'list' => ['Home', 'Penjualan'],
         ];
-
         $page = (object) [
             'title' => 'Daftar penjualan',
         ];
 
         $activeMenu = 'penjualan';
 
-        return view('penjualan.index', compact('breadcrumbs', 'page', 'activeMenu'));
+        // Ambil data user untuk filter
+        $users = UserModel::select('user_id')->get();
+
+
+        return view('penjualan.index', compact('breadcrumbs', 'page', 'activeMenu', 'users'));
     }
 
     public function list(Request $request)
     {
         $penjualan = PenjualanModel::select('penjualan_id', 'penjualan_kode', 'total_harga', 'pembeli', 'penjualan_tanggal', 'user_id')->with('user');
+
+        // Filter berdasarkan user_id jika ada
+        if ($request->filled('user_id')) {
+            $penjualan->where('user_id', $request->user_id);
+        }
 
         return DataTables::of($penjualan)
             ->addIndexColumn()

@@ -58,7 +58,7 @@ class StokController extends Controller
             })
             ->addColumn('aksi', function ($stok) {
                 $btn = '<button onclick="modalAction(\'' . url('/stok/' . $stok->stok_id . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/stok/' . $stok->stok_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                // $btn .= '<button onclick="modalAction(\'' . url('/stok/' . $stok->stok_id . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/stok/' . $stok->stok_id . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
@@ -71,7 +71,11 @@ class StokController extends Controller
         $suppliers = SupplierModel::all();
         $users = UserModel::all();
         $barangs = BarangModel::all();
-        return view('stok.create_ajax', compact('suppliers', 'users', 'barangs'));
+        // untuk menampilkan user login dan tanggal saat ini
+        $loggedInUser = auth()->user();
+        $today = now()->format('Y-m-d');
+
+        return view('stok.create_ajax', compact('suppliers', 'users', 'barangs', 'loggedInUser', 'today'));
     }
 
     public function store_ajax(Request $request)

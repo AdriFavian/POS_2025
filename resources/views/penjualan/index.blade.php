@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('content')
-    <div class="card card-outline card-primary mr-3 ml-3">
+    <div class="card card-outline mr-3 ml-3">
         <div class="card-header">
             {{-- <h3 class="card-title">{{ $page->title }}</h3> --}}
             <div class="card-tools">
@@ -22,6 +22,23 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
+            <!-- Filter -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-1 control-label col-form-label">Filter</label>
+                        <div class="col-3">
+                            <select class="form-control" id="filter_user" name="filter_user">
+                                <option value="">Semua Kasir</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->user_id }}">{{ $user->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Tabel Data Penjualan -->
             <table class="table table-bordered table-striped table-hover table-sm" id="table_penjualan">
                 <thead>
@@ -41,7 +58,7 @@
 
     <!-- Modal Global untuk AJAX (gunakan id "myModal") -->
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <!-- Konten modal akan dimuat secara dinamis melalui AJAX -->
             </div>
@@ -67,19 +84,25 @@
                 processing: true,
                 ajax: {
                     url: "{{ route('penjualan.list') }}",
-                    type: "POST"
+                    type: "POST",
+                    data: function(d) {
+                    d.user_id = $('#filter_user').val();
+                }
                 },
                 columns: [
                     { data: "DT_RowIndex", className: "text-center", orderable: false, searchable: false },
                     { data: "penjualan_kode", orderable: true, searchable: true },
                     { data: "pembeli", orderable: true, searchable: true },
                     { data: "penjualan_tanggal", orderable: true, searchable: true },
-                    { data: "total_harga", orderable: true, searchable: true },
+                    { data: "total_harga", render: function(data) {return 'Rp ' + new Intl.NumberFormat('id-ID').format(data);}, orderable: true, searchable: true },
                     { data: "user_name", orderable: false, searchable: false },
                     { data: "aksi", className: "text-center", orderable: false, searchable: false }
                 ]
             });
-            window.dataPenjualan = dataPenjualan;
+            // window.dataPenjualan = dataPenjualan;
+            $('#filter_user').change(function() {
+            dataPenjualan.ajax.reload();
+        });
         });
     </script>
 @endpush

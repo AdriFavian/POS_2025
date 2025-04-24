@@ -3,8 +3,9 @@
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-        <i class="fas fa-bars"></i>
+      <a class="nav-link" data-widget="pushmenu" href="" role="button">
+        <i class="fas fa-bars mr-2"></i>
+        <span class="font-weight-bold text-white ml-2">POS System</span>
       </a>
     </li>
   </ul>
@@ -14,9 +15,9 @@
     <!-- Fullscreen Button -->
     <li class="nav-item">
       <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-        <i class="fas fa-expand-arrows-alt"></i>
+          <i class="fas fa-expand-arrows-alt"></i>
       </a>
-    </li>
+  </li>
   </ul>
 </nav>
 

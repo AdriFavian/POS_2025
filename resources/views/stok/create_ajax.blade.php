@@ -22,9 +22,16 @@
                 <div class="form-group">
                     <label>User</label>
                     <select name="user_id" id="user_id" class="form-control" required>
-                        <option value="">- Pilih User -</option>
+                        {{-- <option value="">- Pilih User -</option>
                         @foreach($users as $user)
                             <option value="{{ $user->user_id }}">{{ $user->nama }}</option>
+                        @endforeach --}}
+                        @foreach($users as $user)
+                            <option value="{{ $user->user_id }}" 
+                                {{ $user->user_id == $loggedInUser->user_id ? 'selected' : '' }}
+                                {{ $user->user_id != $loggedInUser->user_id ? 'disabled' : '' }}>
+                                {{ $user->nama }}
+                            </option>
                         @endforeach
                     </select>
                     <small id="error-user_id" class="error-text form-text text-danger"></small>
@@ -41,7 +48,9 @@
                 </div>
                 <div class="form-group">
                     <label>Tanggal Stok</label>
-                    <input type="date" name="stok_tanggal" id="stok_tanggal" class="form-control" required>
+                    {{-- <input type="date" name="stok_tanggal" id="stok_tanggal" class="form-control" required> --}}
+                    <input type="date" name="stok_tanggal" id="stok_tanggal" 
+                            class="form-control" required value="{{ $today }}" readonly>
                     <small id="error-stok_tanggal" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
@@ -60,6 +69,13 @@
 
 <script>
     $(document).ready(function () {
+        // Nonaktifkan perubahan pada select user
+        $('#user_id').css('pointer-events', 'none');
+        $('#user_id').css('background-color', '#e9ecef');
+        
+        // Nonaktifkan perubahan pada input tanggal
+        $('#stok_tanggal').css('background-color', '#e9ecef');
+
         $("#form-tambah").validate({
             rules: {
                 supplier_id: { required: true, number: true },
