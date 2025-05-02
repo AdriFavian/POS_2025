@@ -76,6 +76,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
 
+
         // Tangani file foto baru
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
             // Hapus foto lama jika ada, menggunakan disk 'public'
@@ -85,7 +86,7 @@ class UserController extends Controller
             if ($user->photo && Storage::disk('public')->exists('profiles/' . $user->photo)) {
                 Storage::disk('public')->delete('profiles/' . $user->photo);
             }
-            
+
             // Buat nama file baru yang unik
             $file     = $request->file('photo');
             $filename = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
