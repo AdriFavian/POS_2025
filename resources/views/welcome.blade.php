@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('content')
-    <div class="container-fluid" style="padding: 0px 20px" >
+    <div class="container-fluid" style="padding: 0px 20px">
         <!-- Info boxes -->
         <div class="row mb-4">
             <div class="col-12 col-sm-6 col-md-6">
@@ -24,8 +24,9 @@
                         <div class="stat-card-icon sales-icon">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
+                        <div class="stat-card-info">
                             <p class="stat-card-label">Total Penjualan Hari Ini</p>
-                            <h3 class="stat-card-value ml-3 mb-2">Rp {{ number_format($totalPenjualanHariIni, 0, ',', '.') }}</h3>
+                            <h3 class="stat-card-value">Rp {{ number_format($totalPenjualanHariIni, 0, ',', '.') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -33,38 +34,53 @@
         </div>
 
         <!-- Transaksi Terakhir -->
-        <div class="row" style="padding: 0px 20px">
+        <div class="row">
             <div class="col-md-12">
-                <div class="data-card">
-                    <div class="data-card-header">
-                        <h3 class="data-card-title">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fas fa-history mr-2"></i>
                             Transaksi Terakhir
                         </h3>
                     </div>
-                    <div class="data-card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-bordered table-striped table-hover table-sm"
+                                style="table-layout: fixed; width: 100%;">
+                                <colgroup>
+                                    <col style="width: 15%;">
+                                    <col style="width: 18%;">
+                                    <col style="width: 20%;">
+                                    <col style="width: 12%;">
+                                    <col style="width: 20%;">
+                                    <col style="width: 10%;">
+                                </colgroup>
                                 <thead>
                                     <tr>
                                         <th>No Transaksi</th>
                                         <th>Tanggal</th>
                                         <th>Kasir</th>
-                                        <th>Total Items</th>
-                                        <th>Total Harga</th>
-                                        <th>Detail</th>
+                                        <th class="text-center">Total Item</th>
+                                        <th class="text-right">Total Harga</th>
+                                        <th class="text-center">Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($transaksiTerakhir as $transaksi)
                                         <tr>
-                                            <td>{{ $transaksi->penjualan_kode }}</td>
-                                            <td>{{ $transaksi->created_at->format('d/m/Y H:i') }}</td>
-                                            <td>{{ $transaksi->user->nama }}</td>
-                                            <td>{{ $transaksi->detail->sum('jumlah') }}</td>
-                                            <td>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                                             <td>
-                                                <button type="button" class="btn-detail"
+                                                <span class="font-weight-medium">{{ $transaksi->penjualan_kode }}</span>
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($transaksi->created_at)->format('d M Y, H:i') }}</td>
+                                            <td>{{ $transaksi->user->nama }}</td>
+                                            <td class="text-center">
+                                                <span>{{ $transaksi->detail->sum('jumlah') }}</span>
+                                            </td>
+                                            <td class="text-right font-weight-medium">
+                                                Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-sm btn-info"
                                                     onclick="showDetail('{{ $transaksi->penjualan_id }}')">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
@@ -72,7 +88,10 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center">Belum ada transaksi</td>
+                                            <td colspan="6" class="text-center py-3 text-muted">
+                                                <i class="fas fa-info-circle mr-1"></i>
+                                                Belum ada transaksi
+                                            </td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -87,21 +106,13 @@
     <!-- Modal Detail Transaksi -->
     <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailModalLabel">Detail Transaksi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="detailContent">
-                    <!-- Content will be loaded here -->
-                </div>
+                <!-- Modal content will be loaded here via AJAX -->
             </div>
         </div>
     </div>
-    @endsection
+@endsection
 
 @push('js')
     <script>
@@ -110,7 +121,7 @@
                 url: "{{ url('/penjualan') }}/" + id + "/show_ajax",
                 type: "GET",
                 success: function (response) {
-                    $("#detailContent").html(response);
+                    $(".modal-content").html(response);
                     $("#detailModal").modal('show');
                 },
                 error: function (xhr) {
@@ -127,6 +138,7 @@
 
 @push('css')
     <style>
+        /* Stats Cards */
         .stat-card {
             background-color: #fff;
             border-radius: 8px;
@@ -180,256 +192,111 @@
             margin: 0;
         }
 
-        /* Data Card (Table) Styles */
-        .data-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-        }
-
-        .data-card-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid #f5f5f5;
-        }
-
-        .data-card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #212529;
-            margin: 0;
-        }
-
-        .data-card-body {
-            padding: 0;
-        }
-
-        /* Table Styles */
+        /* Table Improvements */
         .table {
             margin-bottom: 0;
         }
 
-        .table th {
-            border-top: none;
-            border-bottom: 1px solid #f0f0f0;
-            color: #6c757d;
-            font-weight: 500;
-            padding: 12px 20px;
-            font-size: 13px;
-        }
-
-        .table td {
-            border-top: none;
-            border-bottom: 1px solid #f5f5f5;
-            padding: 14px 20px;
-            vertical-align: middle;
+        .table thead th {
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
             color: #495057;
+            background-color: #f8f9fa;
+            padding: 0.65rem;
+            vertical-align: middle;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
-        .table tr:last-child td {
-            border-bottom: none;
+        .table tbody td {
+            padding: 0.65rem;
+            vertical-align: middle;
         }
 
-        /* Button Styles */
-        .btn-detail {
-            background-color: rgba(23, 162, 184, 0.1);
-            color: #17a2b8;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.04);
+        }
+
+        .font-weight-medium {
+            font-weight: 500;
+        }
+
+        /* Badge styling */
+        .badge-info {
+            background-color: #17a2b8;
+            color: white;
+            padding: 0.35em 0.65em;
+            font-size: 80%;
+        }
+
+        /* Button Styling */
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
             transition: all 0.2s ease;
         }
 
-        .btn-detail:hover {
-            background-color: rgba(23, 162, 184, 0.2);
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
         }
 
-        /* Modal Styles */
+        /* Modal Improvements */
         .modal-content {
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .modal-header {
             border-bottom: 1px solid #f5f5f5;
-            padding: 16px 20px;
+            padding: 1rem;
         }
 
         .modal-title {
             font-weight: 600;
+            font-size: 1.1rem;
         }
 
-        .close {
-            opacity: 0.5;
-            transition: opacity 0.2s ease;
+        .modal-body {
+            padding: 1.25rem;
         }
 
-        .close:hover {
-            opacity: 0.8;
+        .modal-footer {
+            border-top: 1px solid #f5f5f5;
+            padding: 0.75rem 1rem;
+        }
+
+        /* Card styling consistent with modal */
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            padding: 0.75rem 1.25rem;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            margin-bottom: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-outline.card-primary {
+            border-top: 2px solid #90c5ff;
         }
     </style>
-@endpush 
-
-
-
-
-
-
-
-{{-- @extends('layouts.template')
-
-@section('content')
-<div class="container-fluid">
-    <!-- Info boxes -->
-    <div class="row">
-        <div class="col-12 col-sm-6 col-md-6">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-boxes"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Stok Barang</span>
-                    <span class="info-box-number">{{ number_format($totalStok, 0, ',', '.') }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-6">
-            <div class="info-box mb-3">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Penjualan Hari Ini</span>
-                    <span class="info-box-number">Rp {{ number_format($totalPenjualanHariIni, 0, ',', '.') }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Transaksi Terakhir -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-history mr-1"></i>
-                        Transaksi Terakhir
-                    </h3>
-                </div>
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>No Transaksi</th>
-                                <th>Tanggal</th>
-                                <th>Kasir</th>
-                                <th>Total Items</th>
-                                <th>Total Harga</th>
-                                <th>Detail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($transaksiTerakhir as $transaksi)
-                            <tr>
-                                <td>{{ $transaksi->penjualan_kode }}</td>
-                                <td>{{ $transaksi->created_at->format('d/m/Y H:i') }}</td>
-                                <td>{{ $transaksi->user->nama }}</td>
-                                <td>{{ $transaksi->detail->sum('jumlah') }}</td>
-                                <td>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-info btn-sm"
-                                        onclick="showDetail('{{ $transaksi->penjualan_id }}')">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Belum ada transaksi</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Detail Transaksi -->
-<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailModalLabel">Detail Transaksi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="detailContent">
-                <!-- Content will be loaded here -->
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
-
-@push('js')
-<script>
-    function showDetail(id) {
-        $.ajax({
-            url: "{{ url('/penjualan') }}/" + id + "/show_ajax",
-            type: "GET",
-            success: function (response) {
-                $("#detailContent").html(response);
-                $("#detailModal").modal('show');
-            },
-            error: function (xhr) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Terjadi kesalahan! Silakan coba lagi.'
-                });
-            }
-        });
-    }
-</script>
 @endpush
-
-@push('css')
-<style>
-    .info-box {
-        transition: transform 0.3s ease;
-    }
-
-    .info-box:hover {
-        transform: translateY(-5px);
-    }
-
-    .table td,
-    .table th {
-        vertical-align: middle;
-    }
-</style>
-@endpush --}}
-
-
-{{-- @extends ('layouts.template')
-
-@section('content')
-<div class="card mr-3 ml-3">
-    <div class="card-header">
-        <h3 class="card-title">Halo, apakabar!!!</h3>
-        <div class="card-tools"></div>
-    </div>
-    <div class="card-body">
-        Elit ex nostrud nulla elit. Lorem quis proident commodo deserunt mollit ullamco adipisicing. Occaecat duis
-        proident minim laborum Lorem nulla. Dolor quis velit consectetur est Lorem minim commodo et ut deserunt tempor
-        do qui.
-    </div>
-</div>
-@endsection --}}

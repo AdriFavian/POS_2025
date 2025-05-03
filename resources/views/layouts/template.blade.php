@@ -28,6 +28,41 @@
   <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 
   @stack('css') <!-- untuk memanggil custom css dari perintah push('css') pada masing-masing view -->
+
+  <style>
+    /* Ensuring content scrolls properly with fixed sidebar */
+    .wrapper {
+      overflow-x: hidden;
+    }
+
+    .content-wrapper {
+      min-height: calc(100vh - 114px);
+      /* Adjust based on your header + footer height */
+    }
+
+    /* Improved user image in header */
+    .user-image {
+      height: 30px;
+      width: 30px;
+      object-fit: cover;
+    }
+
+    /* Fix for user menu dropdown */
+    .navbar-nav .user-menu .dropdown-menu {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      border: none;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Gradual transition when navbar collapses */
+    @media (max-width: 991.98px) {
+      .layout-navbar-fixed .wrapper .main-header {
+        left: 0;
+      }
+    }
+  </style>
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -47,34 +82,35 @@
       </a> --}}
       <!-- Dropdown Menu untuk Profil dan Logout -->
       <li class="nav-item dropdown" style="margin-top: 4px;">
-        <a class="nav-link d-flex align-items-center brand-link" data-toggle="dropdown" href="" role="button" aria-haspopup="true"
-          aria-expanded="false">
+        <a class="nav-link d-flex align-items-center brand-link" data-toggle="dropdown" href="" role="button"
+          aria-haspopup="true" aria-expanded="false">
           @if(Auth::user()->photo)
-            <!-- Jika user punya foto -->
-              <img src="{{ asset('storage/profiles/' . Auth::user()->photo) }}" alt=""
-              class="rounded-circle elevation-3" style="opacity: .8; object-fit: cover; width: 42px; height: 42px; margin: 10px;"> 
-              <span class="brand-text rounded-circle" style="color: white; margin-left: 10px;">{{ Auth::user()->username ?? 'Guest'}}</span> 
-          @else
-            <!-- Jika user belum punya foto -->
-              <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo"
-                class="brand-image img-circle elevation-3" style="opacity: .8">
-              <span class="brand-text" style="color: white">{{ Auth::user()->username ?? 'Guest'}}</span> 
-          @endif
+        <!-- Jika user punya foto -->
+        <img src="{{ asset('storage/profiles/' . Auth::user()->photo) }}" alt="" class="rounded-circle elevation-3"
+        style="opacity: .8; object-fit: cover; width: 42px; height: 42px; margin: 10px;">
+        <span class="brand-text rounded-circle"
+        style="color: white; margin-left: 10px;">{{ Auth::user()->username ?? 'Guest'}}</span>
+      @else
+        <!-- Jika user belum punya foto -->
+        <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo"
+        class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text" style="color: white">{{ Auth::user()->username ?? 'Guest'}}</span>
+      @endif
         </a>
-            <div class="dropdown-menu dropdown-menu-left" style="width: 97%">
-                  <!-- Menu Profil -->
-                  <a href="{{ url('user/edit_profile') }}" class="dropdown-item" style="border-bottom: 1px solid gray">
-                    <i class="fas fa-user mr-2 mb-2" style="color: dodgerblue"></i> profile
-                  </a>
-                  <!-- Menu Logout -->
-                  <a href="logout" class="dropdown-item" onclick="logoutConfirm(event)">
-                    <i class="fas fa-sign-out-alt mr-2" style="color: tomato"></i> Logout
-                  </a>
-                  <!-- Form Logout (tersembunyi) -->
-              <form id="logout-form" action="{{ url('/logout') }}" method="POST" class="d-none">
-                @csrf
-              </form>
-            </div>
+        <div class="dropdown-menu dropdown-menu-left" style="width: 97%">
+          <!-- Menu Profil -->
+          <a href="{{ url('user/edit_profile') }}" class="dropdown-item" style="border-bottom: 1px solid gray">
+            <i class="fas fa-user mr-2 mb-2" style="color: dodgerblue"></i> profile
+          </a>
+          <!-- Menu Logout -->
+          <a href="logout" class="dropdown-item" onclick="logoutConfirm(event)">
+            <i class="fas fa-sign-out-alt mr-2" style="color: tomato"></i> Logout
+          </a>
+          <!-- Form Logout (tersembunyi) -->
+          <form id="logout-form" action="{{ url('/logout') }}" method="POST" class="d-none">
+            @csrf
+          </form>
+        </div>
       </li>
 
       <!-- Sidebar -->

@@ -63,7 +63,7 @@ class PenjualanController extends Controller
         $penjualan = PenjualanModel::with(['user', 'detail.barang'])->find($id);
 
         // Mengembalikan view show_ajax (misalnya resources/views/penjualan/show_ajax.blade.php)
-        return view('penjualan.detail.index', compact('penjualan'));
+        return view('penjualan.show_ajax', compact('penjualan'));
     }
 
     public function confirm_ajax($id)
@@ -173,5 +173,51 @@ class PenjualanController extends Controller
         // Tampilkan file Excel untuk diunduh
         $writer->save('php://output');
         exit;
+    }
+
+    public function create_ajax()
+    {
+        $users = UserModel::all();
+        $barang = \App\Models\BarangModel::all();
+        return view('penjualan.create_ajax', compact('users', 'barang'));
+    }
+
+    public function store_ajax(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:m_user,user_id',
+            'pembeli' => 'required|string|max:50',
+            'penjualan_tanggal' => 'required|date',
+            'barang_id.*' => 'required|exists:m_barang,barang_id',
+            'harga.*' => 'required|integer|min:0',
+            'jumlah.*' => 'required|integer|min:1',
+        ]);
+
+        // Generate kode penjualan unik
+        $kode = strtoupper(\Illuminate\Support\Str::random(10));
+
+        $penjualan = PenjualanModel::create([
+            'user_id' => $request->user_id,
+            'pembeli' => $request->pembeli,
+            'penjualan_kode' => $kode,
+            'penjualan_tanggal' => $request->penjualan_tanggal,
+            'total_harga' => 0,
+        ]);
+
+        $total = 0;
+        foreach ($request->barang_id as $i => $barang_id) {
+            $harga = $request->harga[$i];
+            $jumlah = $request->jumlah[$i];
+            $subtotal = $harga * $jumlah;
+            $penjualan->detail()->create([
+                'barang_id' => $barang_id,
+                'harga' => $harga,
+                'jumlah' => $jumlah,
+            ]);
+            $total += $subtotal;
+        }
+        $penjualan->update(['total_harga' => $total]);
+
+        return response()->json(['success' => true, 'message' => 'Transaksi penjualan berhasil ditambahkan.']);
     }
 }

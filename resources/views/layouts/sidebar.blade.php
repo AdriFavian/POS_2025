@@ -1,127 +1,256 @@
 @php
-$activeMenu = $activeMenu ?? '';
+  $activeMenu = $activeMenu ?? '';
 @endphp
 
 <div class="sidebar">
-  {{-- <!-- SidebarSearch Form -->
-  <div class="form-inline mt-2">
-    <div class="input-group" data-widget="sidebar-search">
-      <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-      <div class="input-group-append">
-        <button class="btn btn-sidebar">
-          <i class="fas fa-search fa-fw"></i>
-        </button>
-      </div>
-    </div>
-  </div> --}}
   <!-- Sidebar Menu -->
-  <nav class="mt-2">
+  <nav class="mt-2 sidebar-nav">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
       <li class="nav-item">
-        <a href="{{ url('/') }}" class="nav-link {{ ($activeMenu == 'dashboard') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out;  padding: 10px 15px;">
-          <i class="nav-icon fas fa-tachometer-alt" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Dashboard</p>
+        <a href="{{ url('/') }}" class="nav-link {{ ($activeMenu == 'dashboard') ? 'active' : '' }}">
+          <i class="nav-icon fas fa-tachometer-alt"></i>
+          <p>Dashboard</p>
         </a>
       </li>
-      <li class="nav-header">Data Pengguna</li>
-      <li class="nav-item">
-        <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out; padding: 10px 15px;">
-          <i class="nav-icon fas fa-layer-group" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Level User</p>
-        </a>
+
+      <li class="nav-header">
+        <span class="nav-header-text">DATA PENGGUNA</span>
       </li>
       <li class="nav-item">
-        <a href="{{ url('/user') }}" class="nav-link {{ ($activeMenu == 'user') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out; padding: 10px 15px;">
-          <i class="nav-icon far fa-user" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Data User</p>
-        </a>
-      </li>
-      <li class="nav-header">Data Barang</li>
-      <li class="nav-item">
-        <a href="{{ url('/kategori') }}" class="nav-link {{ ($activeMenu == 'kategori') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out; padding: 10px 15px;">
-          <i class="nav-icon far fa-bookmark" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Kategori Barang</p>
+        <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level') ? 'active' : '' }}">
+          <i class="nav-icon fas fa-layer-group"></i>
+          <p>Level User</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu == 'barang') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out; padding: 10px 15px;">
-          <i class="nav-icon far fa-list-alt" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Daftar Barang</p>
+        <a href="{{ url('/user') }}" class="nav-link {{ ($activeMenu == 'user') ? 'active' : '' }}">
+          <i class="nav-icon far fa-user"></i>
+          <p>Data User</p>
+        </a>
+      </li>
+
+      <li class="nav-header">
+        <span class="nav-header-text">DATA BARANG</span>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url('/kategori') }}" class="nav-link {{ ($activeMenu == 'kategori') ? 'active' : '' }}">
+          <i class="nav-icon far fa-bookmark"></i>
+          <p>Kategori Barang</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="{{ url('/supplier') }}" class="nav-link {{ ($activeMenu == 'supplier') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out; padding: 10px 15px;">
-          <i class="nav-icon far fa-list-alt" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Daftar Supplier</p>
-        </a>
-      </li>
-      <li class="nav-header">Data Transaksi</li>
-      <li class="nav-item">
-        <a href="{{ url('/stok') }}" class="nav-link {{ ($activeMenu == 'stok') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out; padding: 10px 15px;">
-          <i class="nav-icon fas fa-cubes" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Stok Barang</p>
+        <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu == 'barang') ? 'active' : '' }}">
+          <i class="nav-icon far fa-list-alt"></i>
+          <p>Daftar Barang</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="{{ url('/penjualan') }}" class="nav-link {{ ($activeMenu == 'penjualan') ? 'active' : '' }}"
-          style="transition: all 0.3s ease-in-out; padding: 10px 15px;">
-          <i class="nav-icon fas fa-cash-register" style="transition: transform 0.3s ease-in-out;"></i>
-          <p style="transition: transform 0.3s ease-in-out;">Transaksi Penjualan</p>
+        <a href="{{ url('/supplier') }}" class="nav-link {{ ($activeMenu == 'supplier') ? 'active' : '' }}">
+          <i class="nav-icon fas fa-truck"></i>
+          <p>Daftar Supplier</p>
+        </a>
+      </li>
+
+      <li class="nav-header">
+        <span class="nav-header-text">DATA TRANSAKSI</span>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url('/stok') }}" class="nav-link {{ ($activeMenu == 'stok') ? 'active' : '' }}">
+          <i class="nav-icon fas fa-cubes"></i>
+          <p>Stok Barang</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url('/penjualan') }}" class="nav-link {{ ($activeMenu == 'penjualan') ? 'active' : '' }}">
+          <i class="nav-icon fas fa-cash-register"></i>
+          <p>Transaksi Penjualan</p>
         </a>
       </li>
     </ul>
   </nav>
 
   <style>
-    .nav-link {
+    /* Sidebar style improvements */
+    .main-sidebar {
+      position: fixed !important;
+      /* Ensure sidebar is fixed */
+      height: 100vh !important;
+      /* Full viewport height */
+      overflow-y: hidden !important;
+      /* Hide overflow initially */
+      z-index: 1038 !important;
+      /* Above most content */
+      transition: all 0.3s ease !important;
+    }
+
+    .sidebar {
+      padding-top: 0.5rem;
+      height: calc(100% - 57px) !important;
+      /* Subtract height of the navbar brand/logo */
+      overflow-y: auto !important;
+      /* Enable scrolling inside sidebar */
+      scrollbar-width: thin;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+    }
+
+    .sidebar-nav .nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #343a40;
+      padding: 1rem 1rem 0.5rem 1rem;
+      font-size: 0.75rem;
+      opacity: 0.85;
+      /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav .nav-header-text {
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .sidebar-nav .nav-link {
       color: #c2c7d0 !important;
-      /* Warna teks default */
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin: 0 0.5rem 0.25rem 0.5rem;
       position: relative;
       overflow: hidden;
+      transition: all 0.25s ease;
     }
 
-    .nav-link:hover {
+    .sidebar-nav .nav-link:hover {
       background-color: rgba(255, 255, 255, 0.1) !important;
       color: #ffffff !important;
+      transform: translateX(3px);
     }
 
-    .nav-link:hover i,
-    .nav-link:hover p {
-      transform: translateX(5px);
-    }
-
-    .nav-link.active {
+    .sidebar-nav .nav-link.active {
       background: linear-gradient(45deg, #0e82ff, #007bff) !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transform: translateX(5px);
-      transition: all 0.3s ease-in-out;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+      transform: translateX(3px);
     }
 
-    .nav-link.active i,
-    .nav-link.active p {
-      transform: translateX(0);
+    .sidebar-nav .nav-link i {
+      font-size: 1rem;
+      margin-right: 0.5rem;
+      transition: transform 0.25s ease;
+      width: 20px;
+      text-align: center;
     }
 
-    .nav-link::before {
+    .sidebar-nav .nav-link:hover i {
+      transform: translateX(2px);
+    }
+
+    .sidebar-nav .nav-link p {
+      transition: transform 0.25s ease;
+      font-weight: 500;
+    }
+
+    .sidebar-nav .nav-link:hover p {
+      transform: translateX(2px);
+    }
+
+    .sidebar-nav .nav-link::before {
       content: '';
       position: absolute;
+      left: 0;
       top: 0;
-      left: -100%;
-      width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      /* transition: 0.2s; */
+      width: 3px;
+      background: #007bff;
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
 
-    .nav-link:hover::before {
-      left: 100%;
+    .sidebar-nav .nav-link:hover::before {
+      opacity: 0.5;
+    }
+
+    .sidebar-nav .nav-link.active::before {
+      opacity: 1;
+    }
+
+    /* Add scroll indicator */
+    .sidebar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: linear-gradient(to top, rgba(52, 58, 64, 1), rgba(52, 58, 64, 0));
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .sidebar.can-scroll::after {
+      opacity: 1;
+    }
+
+    /* Mobile optimization */
+    @media (max-width: 768px) {
+      .sidebar-nav .nav-link {
+        padding: 0.65rem 0.75rem;
+        margin: 0 0.25rem 0.25rem 0.25rem;
+      }
+
+      .sidebar-nav .nav-header {
+        padding: 0.75rem 0.75rem 0.35rem 0.75rem;
+      }
+    }
+
+    /* Fix potential layout issues */
+    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper,
+    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer,
+    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+      transition: margin-left .3s ease-in-out !important;
     }
   </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check if sidebar can be scrolled
+      const sidebar = document.querySelector('.sidebar');
+
+      function checkScroll() {
+        if (sidebar.scrollHeight > sidebar.clientHeight) {
+          sidebar.classList.add('can-scroll');
+        } else {
+          sidebar.classList.remove('can-scroll');
+        }
+      }
+
+      // Check initially and on resize
+      checkScroll();
+      window.addEventListener('resize', checkScroll);
+
+      // On scroll, remove indicator when at bottom
+      sidebar.addEventListener('scroll', function () {
+        if (sidebar.scrollHeight - sidebar.scrollTop - sidebar.clientHeight < 10) {
+          sidebar.classList.remove('can-scroll');
+        } else {
+          checkScroll();
+        }
+      });
+    });
+  </script>
+</div>

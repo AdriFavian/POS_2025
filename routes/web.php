@@ -134,6 +134,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('penjualan')->group(function () {
             Route::get('/', [PenjualanController::class, 'index']);
             Route::post('/list', [PenjualanController::class, 'list'])->name('penjualan.list');
+            Route::get('/create_ajax', [PenjualanController::class, 'create_ajax']); 
+            Route::post('/ajax', [PenjualanController::class, 'store_ajax']); 
             Route::get('/{id}/show_ajax', [PenjualanController::class, 'show_ajax']);
             Route::get('/export_pdf', [PenjualanController::class, 'export_pdf']);
             Route::get('/export_excel', [PenjualanController::class, 'export_excel']);

@@ -11,6 +11,9 @@
                 <a href="{{ url('/penjualan/export_pdf') }}"class="btn btn-sm btn-light mr-2" style="border: 1px solid black">
                     <i class="fa fa-file-pdf mr-1" style="color: tomato"></i> Export PDF
                 </a>
+                <button onclick="modalAction('{{ url('penjualan/create_ajax') }}')" class="btn btn-sm btn-success">
+                    <i class="fa fa-plus mr-1"></i> Tambah Transaksi
+                </button>
             </div>
         </div>
         <div class="card-body">
@@ -58,7 +61,7 @@
 
     <!-- Modal Global untuk AJAX (gunakan id "myModal") -->
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <!-- Konten modal akan dimuat secara dinamis melalui AJAX -->
             </div>
@@ -73,8 +76,13 @@
     <script>
         // Fungsi untuk memuat konten modal via AJAX
         function modalAction(url = '') {
-            $('#myModal').load(url, function () {
-                $('#myModal').modal('show');
+            // Targetkan .modal-content untuk memuat HTML
+            $('#myModal .modal-content').load(url, function (response, status, xhr) {
+                if (status == "error") {
+                    // Handle error jika gagal load, misalnya tampilkan pesan
+                    $(this).html('<div class="modal-header"><h5 class="modal-title">Error</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div><div class="modal-body"><p>Gagal memuat konten: ' + xhr.status + " " + xhr.statusText + '</p></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button></div>');
+                }
+                $('#myModal').modal('show'); // Tampilkan modal setelah konten dimuat
             });
         }
 
