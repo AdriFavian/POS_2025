@@ -5,10 +5,12 @@
         <div class="card-header">
             {{-- <h3 class="card-title">{{ $page->title }}</h3> --}}
             <div class="card-tools">
-                <a href="{{ url('/penjualan/export_excel') }}" class="btn btn-sm bg-light mr-2" style="border: 1px solid black">
+                <a href="{{ url('/penjualan/export_excel') }}" class="btn btn-sm bg-light mr-2"
+                    style="border: 1px solid black">
                     <i class="fa fa-file-excel mr-1" style="color: green"></i>Export Excel
                 </a>
-                <a href="{{ url('/penjualan/export_pdf') }}"class="btn btn-sm btn-light mr-2" style="border: 1px solid black">
+                <a href="{{ url('/penjualan/export_pdf') }}" class="btn btn-sm btn-light mr-2"
+                    style="border: 1px solid black">
                     <i class="fa fa-file-pdf mr-1" style="color: tomato"></i> Export PDF
                 </a>
                 <button onclick="modalAction('{{ url('penjualan/create_ajax') }}')" class="btn btn-sm btn-success">
@@ -63,7 +65,7 @@
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <!-- Konten modal akan dimuat secara dinamis melalui AJAX -->
+                <!-- Konten modal akan dimuat di sini -->
             </div>
         </div>
     </div>
@@ -93,24 +95,24 @@
                 ajax: {
                     url: "{{ route('penjualan.list') }}",
                     type: "POST",
-                    data: function(d) {
-                    d.user_id = $('#filter_user').val();
-                }
+                    data: function (d) {
+                        d.user_id = $('#filter_user').val();
+                    }
                 },
                 columns: [
                     { data: "DT_RowIndex", className: "text-center", orderable: false, searchable: false },
                     { data: "penjualan_kode", orderable: true, searchable: true },
                     { data: "pembeli", orderable: true, searchable: true },
                     { data: "penjualan_tanggal", orderable: true, searchable: true },
-                    { data: "total_harga", render: function(data) {return 'Rp ' + new Intl.NumberFormat('id-ID').format(data);}, orderable: true, searchable: true },
+                    { data: "total_harga", render: function (data) { return 'Rp ' + new Intl.NumberFormat('id-ID').format(data); }, orderable: true, searchable: true },
                     { data: "user_name", orderable: false, searchable: false },
                     { data: "aksi", className: "text-center", orderable: false, searchable: false }
                 ]
             });
             // window.dataPenjualan = dataPenjualan;
-            $('#filter_user').change(function() {
-            dataPenjualan.ajax.reload();
-        });
+            $('#filter_user').change(function () {
+                dataPenjualan.ajax.reload();
+            });
         });
     </script>
 @endpush
