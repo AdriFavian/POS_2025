@@ -30,19 +30,27 @@ class RegisterController extends Controller
             ]);
         }
 
-        $user = UserModel::create([
-            'level_id' => 3,
-            'username' => $request->username,
-            'nama'     => $request->nama,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            $user = UserModel::create([
+                'level_id' => 3,
+                'username' => $request->username,
+                'nama'     => $request->nama,
+                'password' => Hash::make($request->password),
+            ]);
 
-        auth()->login($user);
+            auth()->login($user);
 
-        return response()->json([
-            'status'   => true,
-            'message'  => 'Akun Anda berhasil dibuat! welcome 😊.',
-            'redirect' => url('/')
-        ]);
+            return response()->json([
+                'status'   => true,
+                'message'  => 'Akun Anda berhasil dibuat! welcome 😊.',
+                'redirect' => url('/')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

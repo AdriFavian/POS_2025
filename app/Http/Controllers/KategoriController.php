@@ -72,15 +72,23 @@ class KategoriController extends Controller
                 ]);
             }
 
-            KategoriModel::create([
-                'kategori_kode' => $request->kategori_kode,
-                'kategori_nama' => $request->kategori_nama,
-            ]);
+            try {
+                KategoriModel::create([
+                    'kategori_kode' => $request->kategori_kode,
+                    'kategori_nama' => $request->kategori_nama,
+                ]);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Data kategori berhasil disimpan.',
-            ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data kategori berhasil disimpan.',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan pada server',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
         }
 
         return redirect('/');
@@ -111,15 +119,23 @@ class KategoriController extends Controller
 
             $kategori = KategoriModel::find($id);
             if ($kategori) {
-                $kategori->update([
-                    'kategori_kode' => $request->kategori_kode,
-                    'kategori_nama' => $request->kategori_nama,
-                ]);
+                try {
+                    $kategori->update([
+                        'kategori_kode' => $request->kategori_kode,
+                        'kategori_nama' => $request->kategori_nama,
+                    ]);
 
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data kategori berhasil diperbarui.',
-                ]);
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data kategori berhasil diperbarui.',
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan pada server',
+                        'error' => $e->getMessage()
+                    ], 500);
+                }
             } else {
                 return response()->json([
                     'status' => false,

@@ -193,31 +193,39 @@ class PenjualanController extends Controller
             'jumlah.*' => 'required|integer|min:1',
         ]);
 
-        // Generate kode penjualan unik
-        $kode = strtoupper(\Illuminate\Support\Str::random(10));
+        try {
+            // Generate kode penjualan unik
+            $kode = strtoupper(\Illuminate\Support\Str::random(10));
 
-        $penjualan = PenjualanModel::create([
-            'user_id' => $request->user_id,
-            'pembeli' => $request->pembeli,
-            'penjualan_kode' => $kode,
-            'penjualan_tanggal' => $request->penjualan_tanggal,
-            'total_harga' => 0,
-        ]);
-
-        $total = 0;
-        foreach ($request->barang_id as $i => $barang_id) {
-            $harga = $request->harga[$i];
-            $jumlah = $request->jumlah[$i];
-            $subtotal = $harga * $jumlah;
-            $penjualan->detail()->create([
-                'barang_id' => $barang_id,
-                'harga' => $harga,
-                'jumlah' => $jumlah,
+            $penjualan = PenjualanModel::create([
+                'user_id' => $request->user_id,
+                'pembeli' => $request->pembeli,
+                'penjualan_kode' => $kode,
+                'penjualan_tanggal' => $request->penjualan_tanggal,
+                'total_harga' => 0,
             ]);
-            $total += $subtotal;
-        }
-        $penjualan->update(['total_harga' => $total]);
 
-        return response()->json(['success' => true, 'message' => 'Transaksi penjualan berhasil ditambahkan.']);
+            $total = 0;
+            foreach ($request->barang_id as $i => $barang_id) {
+                $harga = $request->harga[$i];
+                $jumlah = $request->jumlah[$i];
+                $subtotal = $harga * $jumlah;
+                $penjualan->detail()->create([
+                    'barang_id' => $barang_id,
+                    'harga' => $harga,
+                    'jumlah' => $jumlah,
+                ]);
+                $total += $subtotal;
+            }
+            $penjualan->update(['total_harga' => $total]);
+
+            return response()->json(['success' => true, 'message' => 'Transaksi penjualan berhasil ditambahkan.']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

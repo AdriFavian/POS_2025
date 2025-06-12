@@ -71,15 +71,23 @@ class LevelController extends Controller
                 ]);
             }
 
-            LevelModel::create([
-                'level_kode' => $request->level_kode,
-                'level_nama' => $request->level_nama,
-            ]);
+            try {
+                LevelModel::create([
+                    'level_kode' => $request->level_kode,
+                    'level_nama' => $request->level_nama,
+                ]);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Data level berhasil disimpan.',
-            ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data level berhasil disimpan.',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan pada server',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
         }
 
         return redirect('/');
@@ -111,15 +119,23 @@ class LevelController extends Controller
 
             $level = LevelModel::find($id);
             if ($level) {
-                $level->update([
-                    'level_kode' => $request->level_kode,
-                    'level_nama' => $request->level_nama,
-                ]);
+                try {
+                    $level->update([
+                        'level_kode' => $request->level_kode,
+                        'level_nama' => $request->level_nama,
+                    ]);
 
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data level berhasil diperbarui',
-                ]);
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data level berhasil diperbarui',
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan pada server',
+                        'error' => $e->getMessage()
+                    ], 500);
+                }
             } else {
                 return response()->json([
                     'status' => false,

@@ -66,37 +66,57 @@ class BarangController extends Controller
 
         $validator = Validator::make($request->all(), [
             'kategori_id' => 'sometimes|required',
-            'barang_kode' => 'sometimes|required',
+            'barang_kode' => 'sometimes|required|unique:m_barang,barang_kode,' . $id . ',barang_id',
             'barang_nama' => 'sometimes|required',
             'harga_beli' => 'sometimes|required|numeric',
             'harga_jual' => 'sometimes|required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
         }
 
-        $data = $request->only(['kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual']);
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image->storeAs('public/barang', $image->hashName());
-            $data['image'] = $image->hashName();
+        try {
+            $data = $request->only(['kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual']);
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $image->storeAs('public/barang', $image->hashName());
+                $data['image'] = $image->hashName();
+            }
+
+            $barang->update($data);
+
+            return response()->json([
+                'success' => true,
+                'barang' => $barang
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $barang->update($data);
-
-        return response()->json([
-            'success' => true,
-            'barang' => $barang
-        ]);
     }
 
     public function destroy(BarangModel $barang)
     {
-        $barang->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Data terhapus',
-        ]);
+        try {
+            $barang->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Data terhapus',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

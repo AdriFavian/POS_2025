@@ -68,12 +68,20 @@ class SupplierController extends Controller
             ]);
         }
 
-        SupplierModel::create($request->all());
+        try {
+            SupplierModel::create($request->all());
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Data supplier berhasil disimpan',
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Data supplier berhasil disimpan',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function show_ajax(string $id)
@@ -109,12 +117,20 @@ class SupplierController extends Controller
 
         $check = SupplierModel::find($id);
         if ($check) {
-            $check->update($request->all());
+            try {
+                $check->update($request->all());
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Data berhasil diupdate',
-            ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diupdate',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan pada server',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
         }
 
         return response()->json([

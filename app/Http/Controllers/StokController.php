@@ -98,18 +98,26 @@ class StokController extends Controller
                 ]);
             }
 
-            StokModel::create([
-                'supplier_id' => $request->supplier_id,
-                'user_id' => $request->user_id,
-                'barang_id' => $request->barang_id,
-                'stok_tanggal' => $request->stok_tanggal,
-                'stok_jumlah' => $request->stok_jumlah,
-            ]);
+            try {
+                StokModel::create([
+                    'supplier_id' => $request->supplier_id,
+                    'user_id' => $request->user_id,
+                    'barang_id' => $request->barang_id,
+                    'stok_tanggal' => $request->stok_tanggal,
+                    'stok_jumlah' => $request->stok_jumlah,
+                ]);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Data stok berhasil disimpan.',
-            ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data stok berhasil disimpan.',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan pada server',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
         }
         return redirect('/');
     }

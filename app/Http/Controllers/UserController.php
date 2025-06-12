@@ -155,11 +155,19 @@ class UserController extends Controller
                 ]);
             }
 
-            UserModel::create($request->all());
-            return response()->json([
-                'status' => true,
-                'message' => 'Data user berhasil disimpan',
-            ]);
+            try {
+                UserModel::create($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data user berhasil disimpan',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan pada server',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
         }
 
         return redirect('/');
@@ -203,15 +211,22 @@ class UserController extends Controller
             }
             $check = UserModel::find($id);
             if ($check) {
-                if (! $request->filled('password')) { // jika password tidak diisi, maka hapus dari request
-
-                    $request->request->remove('password');
+                try {
+                    if (! $request->filled('password')) { // jika password tidak diisi, maka hapus dari request
+                        $request->request->remove('password');
+                    }
+                    $check->update($request->all());
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil diupdate',
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan pada server',
+                        'error' => $e->getMessage()
+                    ], 500);
                 }
-                $check->update($request->all());
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diupdate',
-                ]);
             } else {
                 return response()->json([
                     'status' => false,

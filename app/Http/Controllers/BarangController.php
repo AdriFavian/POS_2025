@@ -80,18 +80,26 @@ class BarangController extends Controller
                 ]);
             }
 
-            BarangModel::create([
-                'kategori_id' => $request->kategori_id,
-                'barang_kode' => $request->barang_kode,
-                'barang_nama' => $request->barang_nama,
-                'harga_beli' => $request->harga_beli,
-                'harga_jual' => $request->harga_jual,
-            ]);
+            try {
+                BarangModel::create([
+                    'kategori_id' => $request->kategori_id,
+                    'barang_kode' => $request->barang_kode,
+                    'barang_nama' => $request->barang_nama,
+                    'harga_beli' => $request->harga_beli,
+                    'harga_jual' => $request->harga_jual,
+                ]);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Data barang berhasil disimpan.',
-            ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data barang berhasil disimpan.',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan pada server',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
         }
         return redirect('/');
     }
@@ -131,18 +139,26 @@ class BarangController extends Controller
 
             $barang = BarangModel::find($id);
             if ($barang) {
-                $barang->update([
-                    'kategori_id' => $request->kategori_id,
-                    'barang_kode' => $request->barang_kode,
-                    'barang_nama' => $request->barang_nama,
-                    'harga_beli' => $request->harga_beli,
-                    'harga_jual' => $request->harga_jual,
-                ]);
+                try {
+                    $barang->update([
+                        'kategori_id' => $request->kategori_id,
+                        'barang_kode' => $request->barang_kode,
+                        'barang_nama' => $request->barang_nama,
+                        'harga_beli' => $request->harga_beli,
+                        'harga_jual' => $request->harga_jual,
+                    ]);
 
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data barang berhasil diperbarui.',
-                ]);
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data barang berhasil diperbarui.',
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan pada server',
+                        'error' => $e->getMessage()
+                    ], 500);
+                }
             } else {
                 return response()->json([
                     'status' => false,
