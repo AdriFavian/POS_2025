@@ -66,6 +66,22 @@
           <p>Transaksi Penjualan</p>
         </a>
       </li>
+      
+      <li class="nav-header">
+        <span class="nav-header-text">KONTAK</span>
+      </li>
+      <li class="nav-item">
+        <a href="https://wa.me/6281234567890" target="_blank" class="nav-link">
+          <i class="nav-icon fab fa-whatsapp"></i>
+          <p>WhatsApp</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="https://instagram.com/yourprofile" target="_blank" class="nav-link">
+          <i class="nav-icon fab fa-instagram"></i>
+          <p>Instagram</p>
+        </a>
+      </li>
     </ul>
   </nav>
 

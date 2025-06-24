@@ -2,7 +2,21 @@
 
 @section('content')
     <div class="container-fluid" style="padding: 0px 20px">
-        <!-- Info boxes -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-12 col-md-8">
+                <div class="rounded shadow-sm">
+                    <div style="position:relative; width:100%; padding-bottom:50%; height:0;">
+                        <iframe src="https://www.youtube.com/embed/3f0AXYbwovI?si=1Bz5cr8jflLdfBgZ"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+                            style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius:8px;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row mb-4">
             <div class="col-12 col-sm-6 col-md-6">
                 <div class="stat-card">
